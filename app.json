@@ -5,41 +5,37 @@
     "repository": "https://github.com/coinbookbrasil/coinbook",
     "keywords": ["node", "biscoint","trading","trader","bot","market","maker","algo","crypto"],
     "env": {
-      "BINANCE_API_KEY": {
-        "description": "Your Binance API Key",
+      "apiKey": {
+        "description": "Sua API Key da Biscoint",
         "required": true
       },
-      "BINANCE_SECRET_KEY": {
-        "description": "Your Binance API Secret",
+      "apiSecret": {
+        "description": "Sua API Secret da Biscoint",
         "required": true
       },
-      "BVA_API_KEY": {
-        "description": "Your BitcoinVsAltcoins.com Account API Key",
+      "BOT_TOKEN": {
+        "description": "Token do Telegram",
         "required": true
       },
-      "GMAIL_ADDRESS": {
-        "description": "Gmail email to get notifications",
-        "required": false
+      "BOT_CHAT": {
+        "description": "Chat id do Telegram",
+        "required": true
       },
-      "GMAIL_APP_PASSWORD": {
-        "description": "Gmail password to get notifications",
-        "required": false
+      "botId": {
+        "description": "Id do primeiro bot. Ex.: bot_1 e bot_2",
+        "required": true
       },
-      "TELEGRAM_API_KEY": {
-        "description": "Telegram Key for your bot (To create one follow https://core.telegram.org/bots#6-botfather )",
-        "required": false
+      "montante": {
+        "description": "Valor que você irá operar",
+        "required": true
       },
-      "TELEGRAM_RECEIVER_ID": {
-        "description": "Unique identifier for the target chat or username of the target channel (in the format @channelusername)",
-        "required": false
+      "valorInicial": {
+        "description": "Valor inicial que você depositou",
+        "required": true
       },
-      "USE_GMAIL": {
-        "description": "Selects if Gmail will be used",
-        "required": false
-      },
-      "USE_TELEGRAM": {
-        "description": "Selects if Telegram will be used",
-        "required": false
+      "dataInicial": {
+        "description": "Data que o bot iniciou. xx/xx/xxxx",
+        "required": true
       }
     }
   }
