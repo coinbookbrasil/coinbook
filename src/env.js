@@ -23,7 +23,7 @@ module.exports = envalid.cleanEnv(process.env, {
 	intervalo: envalid.num({ default: "2.5" }),
 	host1: envalid.str({ default: "143.198.237.4" }),
     host2: envalid.str({ default: "64.227.99.7" }),
-    port: envalid.str({
+    port: envalid.num({
         default: 80,
         desc: "The port to start the server on",
     }),
