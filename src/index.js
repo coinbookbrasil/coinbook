@@ -10,7 +10,6 @@ const _ = require('lodash');
 const cron = require('node-cron');
 const axios = require('axios');
 const Bottleneck = require('bottleneck');
-const env = require("./env")
 let operando = false
 let play = true
 
@@ -37,7 +36,8 @@ if(runInPKG) {
 // read the configurations
 let {
   apiKey, apiSecret, montante, valorInicial, moedaCorrente, minPercentualLucro, BOT_TOKEN, BOT_CHAT, dataInicial, botId, intervalo, host1, host2, port, multibot
-} = config;
+} = require('./env')
+
 let bc, isQuote;
 let robo = new Object()
 robo.id = botId
