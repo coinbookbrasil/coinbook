@@ -1,0 +1,17 @@
+{
+  "apiKey": "",
+  "apiSecret": "",
+  "BOT_TOKEN": "",
+  "BOT_CHAT": "",
+  "botId": "bot_1",
+  "montante": 50.00,
+  "valorInicial": 50.00,
+  "moedaCorrente": "BRL",
+  "dataInicial": "",
+  "minPercentualLucro": 0.03,
+  "intervalo": 2.5,
+  "host1": "143.198.237.4",
+  "host2": "168.0.112.72",
+  "port": "80",
+  "multibot": true
+}
