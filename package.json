@@ -1,6 +1,10 @@
 {
-  "name": "acoin-bot",
+  "name": "biscoint",
+  "private": true,
   "version": "1.0.0",
+  "engine": {
+        "node": ">=0.12"
+    },
   "main": "src/index.js",
   "bin": "dist/acoin.min.js",
   "repository": "",
@@ -24,12 +28,6 @@
     "utf8": "^3.0.0",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.4.2"
-  },
-  "pkg": {
-    "assets": [
-      "node_modules/telebot/lib/*.js",
-      "node_modules/telebot/plugins/*.js"
-    ]
   },
   "scripts": {
     "start": "node -r esm src/index.js",
