@@ -23,9 +23,5 @@ module.exports = envalid.cleanEnv(process.env, {
         desc: "The port to start the server on",
     }),
     multibot: envalid.bool({ default: true }),
-    TRADER_PORT: envalid.port({
-        default: 8003,
-        desc: "The port to trader webserver runs",
-    }),
     VERSION: envalid.str({ default: pjson.version }),
 })

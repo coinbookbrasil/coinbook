@@ -10,6 +10,7 @@ const _ = require('lodash');
 const cron = require('node-cron');
 const axios = require('axios');
 const Bottleneck = require('bottleneck');
+const env = require("./env")
 let operando = false
 let play = true
 
