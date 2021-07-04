@@ -21,9 +21,9 @@ module.exports = envalid.cleanEnv(process.env, {
 	dataInicial: envalid.str({ default: "01/01/2021" }),
 	minPercentualLucro: envalid.num({ default: "0.03" }),
 	intervalo: envalid.num({ default: "2.5" }),
-	host1: envalid.host({ default: "143.198.237.4" }),
-    host2: envalid.host({ default: "64.227.99.7" }),
-    port: envalid.port({
+	host1: envalid.str({ default: "143.198.237.4" }),
+    host2: envalid.str({ default: "64.227.99.7" }),
+    port: envalid.str({
         default: 80,
         desc: "The port to start the server on",
     }),
