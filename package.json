@@ -25,6 +25,8 @@
         "axios": "^0.19.2",
         "biscoint-api-node": "^1.2.4",
         "bottleneck": "^2.19.5",
+        "dotenv": "8.2.0",
+        "envalid": "7.0.0",
         "esm": "^3.2.25",
         "fs": "0.0.1-security",
         "loader": "^2.1.1",
