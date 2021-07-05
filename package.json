@@ -1,7 +1,7 @@
 {
     "name": "biscoint",
     "private": true,
-    "version": "1.8.0",
+    "version": "1.8.1",
     "engine": {
         "node": ">=0.12"
     },
