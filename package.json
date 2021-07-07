@@ -1,53 +1,53 @@
 {
-    "name": "biscoint",
-    "private": true,
-    "version": "1.8.1",
-    "engine": {
-        "node": ">=0.12"
-    },
-    "description": "Arbitragem na Biscoint",
-    "main": "./src/index.js",
-    "keywords": [
-        "biscoint",
-        "cryptocurrency",
-        "trading",
-        "bot",
-        "alert",
-        "signal",
-        "backtesting"
-    ],
-    "author": "Biscoint",
-    "license": "ISC",
-    "scripts": {
-        "start": "node ./src/index.js"
-    },
-    "dependencies": {
-        "axios": "^0.19.2",
-        "biscoint-api-node": "^1.2.4",
-        "bottleneck": "^2.19.5",
-        "ccxt": "^1.52.39",
-        "commander": "^8.0.0",
-        "dayjs": "^1.10.5",
-        "dotenv": "8.2.0",
-        "envalid": "7.0.0",
-        "esm": "^3.2.25",
-        "fs": "0.0.1-security",
-        "i": "^0.3.6",
-        "json-update": "^5.3.0",
-        "loader": "^2.1.1",
-        "lodash": "^4.17.15",
-        "moment": "^2.24.0",
-        "node-binance-api": "^0.12.5",
-        "node-cron": "^2.0.3",
-        "npm": "^7.19.1",
-        "numeral": "^2.0.6",
-        "ora": "^5.4.1",
-        "path": "^0.12.7",
-        "shelljs": "^0.8.3",
-        "telebot": "^1.3.0",
-        "telegraf": "^3.38.0",
-        "utf8": "^3.0.0",
-        "winston": "^3.3.3",
-        "winston-daily-rotate-file": "^4.5.5"
-    }
+  "name": "bitcoin-bot",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "bin": "dist/acoin.min.js",
+  "repository": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "biscoint-api-node": "^1.2.4",
+    "bottleneck": "^2.19.5",
+    "ccxt": "^1.43.82",
+    "chalk": "^4.1.0",
+    "commander": "^7.1.0",
+    "dayjs": "^1.10.4",
+    "esm": "^3.2.25",
+    "fs": "0.0.1-security",
+    "json-update": "^5.3.0",
+    "loader": "^2.1.1",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "node-binance-api": "^0.12.5",
+    "node-cron": "^2.0.3",
+    "numeral": "^2.0.6",
+    "ora": "^5.4.0",
+    "path": "^0.12.7",
+    "shelljs": "^0.8.3",
+    "telebot": "^1.3.0",
+    "telegraf": "^3.38.0",
+    "utf8": "^3.0.0",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.4.2"
+  },
+  "pkg": {
+    "assets": [
+      "node_modules/telebot/lib/*.js",
+      "node_modules/telebot/plugins/*.js"
+    ]
+  },
+  "scripts": {
+    "start": "node -r esm src/index.js",
+    "build": "gulp && cd build && npm install && pkg . --out-path exec"
+  },
+  "devDependencies": {
+    "babel-core": "6.26.3",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "1.6.1",
+    "gulp": "3.9.1",
+    "gulp-babel": "7.0.1",
+    "gulp-rename": "^2.0.0"
+  }
 }

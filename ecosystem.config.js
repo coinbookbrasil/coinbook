@@ -5,7 +5,7 @@ module.exports = {
 	watch: ["index.js", "config.json"],
 	// Delay between restart
     watch_delay: 1000,
-    ignore_watch : ["node_modules"],
+    ignore_watch : ["node_modules", "log"],
     env: {
       NODE_ENV: "development",
     },

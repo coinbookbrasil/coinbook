@@ -1,4 +1,4 @@
-const Biscoint = require('biscoint-api-node')
+const Biscoint = require ('biscoint-api-node')
 var moment = require('moment');
 var numeral = require('numeral');
 const logger = require('./logger');
@@ -9,21 +9,14 @@ const _ = require('lodash');
 const cron = require('node-cron');
 const axios = require('axios');
 const Bottleneck = require('bottleneck');
-const ora = require('ora');
-const chalk = require('chalk');
-const json = require('json-update')
 const fs = require("fs");
-
 let operando = false
 let play = true
-let acbrl
-let acbtc
-let host
 
 const PKG_TOP_DIR = 'snapshot';
-const path = require('path');
+const path = require('path' );
 
-const runInPKG = (function () {
+const runInPKG = (function(){
   const pathParsed = path.parse(__dirname);
   const root = pathParsed.root;
   const dir = pathParsed.dir;
@@ -33,16 +26,16 @@ const runInPKG = (function () {
 
 let config = null
 
-if (runInPKG) {
+if(runInPKG) {
   const deployPath = path.dirname(process.execPath);
   config = require(path.join(deployPath, 'config.json'));
-} else {
+} else{
   config = require('../config.json')
 }
 
-// configurações das variáveis
+// read the configurations
 let {
-  apiKey, apiSecret, apiKeyBinance, apiSecretBinance, depositoUSDT, dataInicialBinance, montante, valorInicial, moedaCorrente, moedaAcumular, minPercentualLucro, BOT_TOKEN, BOT_CHAT, dataInicial, botId, intervalo, host1, host2, port, multibot
+  apiKey, apiSecret, BOT_TOKEN, BOT_CHAT, botId, montante, valorInicial, moedaCorrente, dataInicial, minPercentualLucro, intervalo, host, port, multibot
 } = require("./env")
 let bc, isQuote;
 let robo = new Object()
@@ -50,15 +43,8 @@ robo.id = botId
 let botStatus = false
 let operacao = new Object()
 operacao.status = false
-
-if (multibot == undefined || multibot == null) {
-  multibot = false
-}
-
-if (moedaAcumular == "BRL") {
-  acbrl = true
-} else {
-  acbtc = true
+if (multibot==undefined || multibot==null){
+  multibot=false
 }
 
 const limiter = new Bottleneck({
@@ -108,36 +94,36 @@ const checkExtrato = async () => {
   let moment2 = moment(dataInicial, "DD/MM/YYYY");
   let dias = moment1.diff(moment2, 'days');
   let lucroRealizado = percent(valorInicial, valorTotal);
-  await bot.telegram.sendMessage(BOT_CHAT,
+  bot.telegram.sendMessage(BOT_CHAT, 
     `\u{1F911} Balanço:
-  <b>Status</b>: ${play ? `\u{1F51B} Robô operando.` : `\u{1F6D1} Robô parado.`} 
-  <b>Acumulando</b>: ${acbrl ? `\u{1F4B5} Real.` : `\u{1F680} BTC.`} 
+  <b>Status</b>: ${play ? `\u{1F51B} Robô operando.`:`\u{1F6D1} Robô parado.` } 
   Data Inicial: ${moment2.format("DD/MM/YYYY")} 
   Dias Operando: ${dias}
   Depósito Inicial: R$ ${valorInicial}  
   <b>BRL:</b> ${BRL} 
-  <b>BTC:</b> ${BTC} (R$ ${(lucro.last * BTC).toFixed(2)})
+  <b>BTC:</b> ${BTC} (R$ ${(lucro.last*BTC).toFixed(2)})
   Operando com: R$ ${montante}
   ============                                                
-  Lucro Parcial: ${lucroreal(valorTotal, lucro.last * BTC).toFixed(2)}% (R$ ${(lucro.last * BTC).toFixed(2)})
+  Lucro Parcial: ${lucroreal(valorTotal, lucro.last*BTC).toFixed(2)}% (R$ ${(lucro.last*BTC).toFixed(2)})
   Lucro Realizado: ${lucroRealizado.toFixed(2)}% (R$ ${(valorTotal - valorInicial).toFixed(2)});
-  <b>Lucro Total: ${(lucroreal(valorTotal, lucro.last * BTC) + lucroRealizado).toFixed(2)}% (R$ ${(lucro.last * BTC + (valorTotal - valorInicial)).toFixed(2)})</b>
+  <b>Lucro Total: ${(lucroreal(valorTotal, lucro.last*BTC) + lucroRealizado).toFixed(2)}% (R$ ${(lucro.last*BTC + (valorTotal - valorInicial)).toFixed(2)})</b>
   ============
   `, replyMarkup.HTML())
   let nAmount = Number(montante);
   let amountBalance = isQuote ? BRL : BTC;
   if (nAmount > Number(amountBalance)) {
     logger.warn(`O valor ${montante}, informado no aquivo de configuração, é maior que o saldo de ${isQuote ? 'BRL' : 'BTC'} do usuário. Saldo do usuário: ${isQuote ? 'BRL' : 'BTC'} ${amountBalance}`)
-    montante = amountBalance
+    montante=amountBalance    
   }
 };
 
-const inicializarSaldo = async () => {
+const inicializarSaldo = async() => {
   logger.info(`Inicializando saldo....`)
   try {
     let { BRL, BTC } = await bc.balance();
-    montante = BRL
+    montante = BRL    
   } catch (error) {
+    //imprimirMensagem(JSON.stringify(error));
     logger.error(`Erro: ${error}`)
   }
 }
@@ -158,24 +144,24 @@ const checkInterval = async () => {
   }
 };
 
-async function realizarLucro(valor) {
+async function realizarLucro(valor){
   return new Promise((resolve, reject) => {
-    (async () => {
-      try {
-        if (valor >= 0.001) {
+    (async() => {
+      try {        
+        if (valor>=0.0001){
           let sellLucro = await bc.offer({
             amount: valor,
             isQuote: false,
             op: 'sell',
           });
-
+    
           try {
             await bc.confirmOffer({
-              offerId: sellLucro.offerId,
+               offerId: sellLucro.offerId,
             });
             let { BRL, BTC } = await bc.balance();
-            montante = BRL
-            resolve(true)
+            montante = BRL            
+            resolve(true)     
           } catch (error) {
             bot.telegram.sendMessage(BOT_CHAT, `${error.error}. ${error.details} `);
             logger.error(`${error.error}. ${error.details}`)
@@ -183,314 +169,135 @@ async function realizarLucro(valor) {
           }
         }
         else {
-          bot.telegram.sendMessage(BOT_CHAT, "Valor de venda abaixo do limite mínimo de 0.001");
-          logger.warn(`Valor de venda abaixo do limite mínimo de 0.001`)
+          bot.telegram.sendMessage(BOT_CHAT, "Valor de venda abaixo do limite mínimo de 0.0001");
+          logger.warn(`Valor de venda abaixo do limite mínimo de 0.0001`)
           reject(false)
-        }
+        }      
       } catch (error) {
-		let { BRL, BTC } = await bc.balance();  
-        bot.telegram.sendMessage(BOT_CHAT, `Verifique o seu saldo em BTC e tente novamente. \nO seu saldo atual em Bitcoin é de ${BTC}`);
+        bot.telegram.sendMessage(BOT_CHAT, `${error.error}. ${error.details} `);
         logger.error(`${error.error}. ${error.details}`)
         reject(false)
       }
     })();
-  }).catch(err => {
-    console.error(err)
-    logger.error(`${err}`)
-  })
-}
-
-async function comprarBTC(valor) {
-  return new Promise((resolve, reject) => {
-    (async () => {
-      try {
-        if (valor >= 50) {
-          let buyOffer = await bc.offer({
-            amount: valor,
-            isQuote: true,
-            op: "buy"
-          });
-          try {
-            await bc.confirmOffer({
-              offerId: buyOffer.offerId,
-            });
-            bot.telegram.sendMessage(BOT_CHAT, `Compra de ${valor} em BTC efetuada com sucesso!`);
-            resolve(true)     
-          } catch (error) {
-            bot.telegram.sendMessage(BOT_CHAT, `${error.error}. ${error.details}`);
-            logger.error(`${error.error}. ${error.details}`)
-            reject(false)
-          }
-        }
-        else {
-          bot.telegram.sendMessage(BOT_CHAT, "Valor de compra abaixo do limite mínimo de 50 reais");
-          logger.warn(`Valor de venda abaixo do limite mínimo de 0.001`)
-          reject(false)
-        }
-      } catch (error) {
-        bot.telegram.sendMessage(BOT_CHAT, `${error.error}. ${error.details}`);
-        logger.error(`${error.error}. ${error.details}`)
-        reject(false)
-      }
-    })();
-  }).catch(err => {
-    console.error(err)
-    logger.error(`${err}`)
-  })
-}
-
-bot.action('comprar', async ctx => {
-  //const nome = ctx.from.first_name
-  let { BRL, BTC } = await bc.balance();
-  ctx.replyWithMarkdown(`Para comprar Bitcoin digite o seguinte comando (/comprar qtdeReal)\nExemplo: /comprar ${BRL}`)
-}
-)
-
-bot.hears(/^\/comprar (.+)$/, async ctx => {
-  let valor = ctx.match[1];
-  comprarBTC(valor)
-}
-)
-
-bot.action('vender', async ctx => {
-  //const nome = ctx.from.first_name
-  let { BRL, BTC } = await bc.balance();
-  ctx.replyWithMarkdown(`Para vender Bitcoin digite o seguinte comando (/vender qtdeBitcoin)\nExemplo: /vender ${BTC}`)
-}
-)
-
-bot.hears(/^\/vender (.+)$/, async ctx => {
-  let valor = ctx.match[1];
-  await realizarLucro(valor)
-}
-)
-
-function checkServer(url) {
-  const controller = new AbortController();
-  const signal = controller.signal;
-  const options = { mode: 'no-cors', signal };
-  return fetch(url, options)
-    .then(setTimeout(() => { controller.abort() }, timeout))
-    .then(response => console.log('Check server response:', response.statusText))
-    .catch(error => console.error('Check server error:', error.message));
+})
+  
 }
 
 async function trader() {
-  if (play) {
-    if (!operando) {
-      if (multibot) {
-		//console.log(host)
-		let numHost = [host1, host2]
-		let hosts = []
-		for (var i = 0; i < 2; i++) {
-		await axios.post(`http://${numHost[i]}:${port}/status`, robo)
-		.then((response) => {
-			if (response.status == 200) {
-				hosts.push(numHost[i])
-				if (hosts.length == 2) {
-					host = hosts[0]
-				} else {
-					host = numHost[i]
-				}
-			}
-		})
-		.catch((error) => { 
-			//console.log(error)
-		}
-		)
-		}	
-		console.log(host)
-		await axios.post(`http://${host}:${port}/status`, robo)
-		.then((response) => {
-        // Success 🎉
-        botStatus = response.data
-		//console.log(botStatus);
-		})
-		.catch((error) => {
-        // Error 😨
-        if (error.response) {
-            /*
-             * The request was made and the server responded with a
-             * status code that falls out of the range of 2xx
-             */
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        } else if (error.request) {
-            /*
-             * The request was made but no response was received, `error.request`
-             * is an instance of XMLHttpRequest in the browser and an instance
-             * of http.ClientRequest in Node.js
-             */
-			console.log(error.request);
-        } else {
-            // Something happened in setting up the request and triggered an Error
-			console.log('Error', error.message);
+  if(play){
+    if(!operando){       
+        if(multibot) {   
+          const res = await axios.post(`http://${host}:${port}/status`, robo)
+          botStatus = res.data          
+        }else{
+          botStatus = true
         }
-       // console.log(error.config);
-		bot.telegram.sendMessage(BOT_CHAT, `Os servidores estão offline. Verifique!`)
-    });
-      } else {
-        botStatus = true
-      }
-	  console.log(botStatus)
-      let buyOffer
-      let sellOffer
-      let profit
-      if (botStatus) {
-        try {
-          buyOffer = await bc.offer({
-            amount: montante,
-            isQuote,
-            op: 'buy',
-          });
-
-          sellOffer = await bc.offer({
-            amount: montante,
-            isQuote,
-            op: 'sell',
-          });
-
-          profit = percent(buyOffer.efPrice, sellOffer.efPrice);
-          profitBRL = (montante * profit) / 100
-          imprimirMensagem(`Variação de preço calculada: ${profit.toFixed(3)}%`);
-          if (profit >= minPercentualLucro) {
-            //Inicia a operação e trava o bot para novas operações até o final da operação corrente, seja quando é realizado um luco
-            //ou quando ocorre um erro.
-            operando = true
-
-            //Confirma as ordens
-            try {
-
-              await bc.confirmOffer({
-                offerId: buyOffer.offerId,
-              });
-
-              await bc.confirmOffer({
-                offerId: sellOffer.offerId,
-              });
-
-              //imprimirMensagem(`Sucesso, lucro: + ${profit.toFixed(3)}%`);
-              bot.telegram.sendMessage(BOT_CHAT, `\u{1F911} Sucesso! Lucro: + ${profit.toFixed(3)}% \n R$ ${profitBRL.toFixed(2)}`, replyMarkup);
-              logger.info(`Sucesso! Lucro: + ${profit.toFixed(3)}% \n R$ ${profitBRL.toFixed(2)}`)
-              let { BRL, BTC } = await bc.balance();
-              lucroAcumulado(profit).then(() => { }).catch(e => { logger.error(e) });
-              // Se acbtc for true, faz a venda proporcional
-              if (acbtc && BTC >= 0.001) {
-                try {
-                  bot.telegram.sendMessage(BOT_CHAT, "Tentando realizar o lucro...");
-                  let priceBTC = await bc.ticker();
-                  let valorAtual = (valorInicial / priceBTC.last).toFixed(8);
-                  let lucroRealizado = await realizarLucro(valorAtual)
-                  if (lucroRealizado) {
-                    bot.telegram.sendMessage(BOT_CHAT, "ok! Lucro realizado", replyMarkup);
-                    inicializarSaldo();
-                    logger.info(`Lucro realizado. Valor: ${BTC}`)
-                  }
-                } catch (error) {
-                  logger.error(`${JSON.stringify(error)}`)
+        let buyOffer
+        let sellOffer
+        let profit
+        if (botStatus){
+          try {
+            buyOffer = await bc.offer({
+              amount: montante,
+              isQuote,
+              op: 'buy',
+            });
+        
+            sellOffer = await bc.offer({
+              amount: montante,
+              isQuote,
+              op: 'sell',
+            });
+        
+            profit = percent(buyOffer.efPrice, sellOffer.efPrice);
+			profitBRL = (montante*profit)/100
+            imprimirMensagem(`Variação de preço calculada: ${profit.toFixed(3)}%`);
+            if (profit >= minPercentualLucro) {
+              //Inicia a operação e trava o bot para novas operações até o final da operação corrente, seja quando é realizado um luco
+              //ou quando ocorre um erro.
+              operando = true        
+  
+              //Confirma as ordens
+              try {
+  
+                await bc.confirmOffer({
+                  offerId: buyOffer.offerId,
+                });
+        
+                await bc.confirmOffer({
+                  offerId: sellOffer.offerId,
+                });
+                      
+                //imprimirMensagem(`Sucesso, lucro: + ${profit.toFixed(3)}%`);
+                bot.telegram.sendMessage(BOT_CHAT, `\u{1F911} Sucesso! Lucro: + ${profit.toFixed(3)}% \n R$ ${profitBRL.toFixed(2)}`, replyMarkup);
+                logger.info(`Sucesso! Lucro: + ${profit.toFixed(3)}% \n R$ ${profitBRL.toFixed(2)}`)
+                let { BRL, BTC } = await bc.balance();
+                if(BTC >= 0.0001){
+                  try {
+                    bot.telegram.sendMessage(BOT_CHAT, "Tentando realizar o lucro...");
+                    let lucroRealizado = await realizarLucro(BTC)
+                    if(lucroRealizado) {
+                      bot.telegram.sendMessage(BOT_CHAT, "ok! Lucro realizado", replyMarkup);
+                      logger.info(`Lucro realizado. Valor: ${BTC}`)                                                       
+                    }
+                  } catch (error) {
+                    //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
+                    logger.error(`${JSON.stringify(error)}`)
+                  }          
                 }
-              } else if (BTC >= 0.001) {
+                //libera o robô para realizar novas operações
+                operando=false
+  
+              } catch (error) {
+                //imprimirMensagem(`Error on confirm offer: ${JSON.stringify(error)}`);
+                logger.error(`Erro ao confirmar a oferta: ${JSON.stringify(error)}`)     
                 try {
-                  bot.telegram.sendMessage(BOT_CHAT, "Tentando realizar o lucro...");
-                  let priceBTC = await bc.ticker();
-                  let { BRL, BTC } = await bc.balance();
-                  let lucroRealizado = await realizarLucro(BTC)
-                  if (lucroRealizado) {
-                    bot.telegram.sendMessage(BOT_CHAT, "ok! Lucro realizado", replyMarkup);
-                    inicializarSaldo();
-                    logger.info(`Lucro realizado. Valor: ${BTC}`)
-                  }
+                  let { BRL, BTC } = await bc.balance();              
+                  if(BTC >= 0.0001){
+                    bot.telegram.sendMessage(BOT_CHAT, "Não foi possível confirmar a venda de BTC. O BTC será vendido a mercado!");
+                    let lucroRealizado = await realizarLucro(BTC)
+                    if(lucroRealizado) {
+                      bot.telegram.sendMessage(BOT_CHAT, "Ok! Saldo em BTC foi vendido a mercado.", replyMarkup);  
+                      logger.info(`Venda de BTC a mercado. Valor: ${BTC}`)
+                    }
+                  } 
                 } catch (error) {
-                  logger.error(`${JSON.stringify(error)}`)
-                }
+                      //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
+                      logger.error(`${JSON.stringify(error)}`)
+                  }          
+                operando=false
               }
-              //libera o robô para realizar novas operações
-              operando = false
-
-            } catch (error) {
-              logger.error(`Erro ao confirmar a oferta: ${JSON.stringify(error)}`)
-              bot.telegram.sendMessage(BOT_CHAT, `${error.error}. ${error.details}`);
-              // Se acbtc for true, faz a venda proporcional
-              if (acbtc && BTC >= 0.001) {
-                try {
-                  bot.telegram.sendMessage(BOT_CHAT, "Tentando realizar o lucro...");
-                  let priceBTC = await bc.ticker();
-                  let valorAtual = (valorInicial / priceBTC.last).toFixed(8);
-                  let lucroRealizado = await realizarLucro(valorAtual)
-                  if (lucroRealizado) {
-                    bot.telegram.sendMessage(BOT_CHAT, "ok! Lucro realizado", replyMarkup);
-                    inicializarSaldo();
-                    logger.info(`Lucro realizado. Valor: ${BTC}`)
-                  }
-                } catch (error) {
-                  logger.error(`${JSON.stringify(error)}`)
-                }
-              } else if (BTC >= 0.001) {
-                try {
-                  bot.telegram.sendMessage(BOT_CHAT, "Tentando realizar o lucro...");
-                  let priceBTC = await bc.ticker();
-                  let { BRL, BTC } = await bc.balance();
-                  let lucroRealizado = await realizarLucro(BTC)
-                  if (lucroRealizado) {
-                    bot.telegram.sendMessage(BOT_CHAT, "ok! Lucro realizado", replyMarkup);
-                    inicializarSaldo();
-                    logger.info(`Lucro realizado. Valor: ${BTC}`)
-                  }
-                } catch (error) {
-                  logger.error(`${JSON.stringify(error)}`)
-                }
-              }
-              operando = false
             }
+          } catch (error) {
+            //imprimirMensagem(`Error on get offer': ${JSON.stringify(error)}`);
+            logger.error(`Erro ao obter oferta: ${JSON.stringify(error)}`)
+            try {
+              let { BRL, BTC } = await bc.balance();              
+              if(BTC >= 0.0001){
+                bot.telegram.sendMessage(BOT_CHAT, "Não foi possível confirmar a venda de BTC. O BTC será vendido a mercado!");
+                let lucroRealizado = await realizarLucro(BTC)
+                if(lucroRealizado) {
+                  bot.telegram.sendMessage(BOT_CHAT, "Ok! Saldo em BTC foi vendido a mercado."); 
+                  logger.info(`Venda de BTC a mercado. Valor: ${BTC}`)
+                }
+              } 
+            } catch (error) {
+                  //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
+                  logger.error(`${JSON.stringify(error)}`)
+              }          
+            operando=false
           }
-        } catch (error) {
-          //imprimirMensagem(`Error on get offer': ${JSON.stringify(error)}`);
-          logger.error(`Erro ao obter oferta: ${JSON.stringify(error)}`)
-          let { BRL, BTC } = await bc.balance();
-          // Se acbtc for true, faz a venda proporcional
-          if (acbtc && BTC >= 0.001) {
-            try {
-              bot.telegram.sendMessage(BOT_CHAT, "Tentando realizar o lucro...");
-              let priceBTC = await bc.ticker();
-              let valorAtual = (valorInicial / priceBTC.last).toFixed(8);
-              let lucroRealizado = await realizarLucro(valorAtual)
-              if (lucroRealizado) {
-                bot.telegram.sendMessage(BOT_CHAT, "ok! Lucro realizado", replyMarkup);
-                inicializarSaldo();
-                logger.info(`Lucro realizado. Valor: ${BTC}`)
-              }
-            } catch (error) {
-              logger.error(`${JSON.stringify(error)}`)
-            }
-          } else if (BTC >= 0.001) {
-            try {
-              bot.telegram.sendMessage(BOT_CHAT, "Tentando realizar o lucro...");
-              let priceBTC = await bc.ticker();
-              let { BRL, BTC } = await bc.balance();
-              let lucroRealizado = await realizarLucro(BTC)
-              if (lucroRealizado) {
-                bot.telegram.sendMessage(BOT_CHAT, "ok! Lucro realizado", replyMarkup);
-                inicializarSaldo();
-                logger.info(`Lucro realizado. Valor: ${BTC}`)
-              }
-            } catch (error) {
-              logger.error(`${JSON.stringify(error)}`)
-            }
-          }
-          operando = false
-        }
-
-      } else {
-        imprimirMensagem('Aguardando...');
-      }
-    } else {
+    
+        } else{
+          imprimirMensagem('Aguardando...');
+        }    
+    } else{
       imprimirMensagem('Operando! Aguardando conclusão...');
     }
-  } else {
+  } else{
     imprimirMensagem('Robô pausado pelo usuário... Para iniciar aperte o botão Iniciar Robô no Telegram.');
   }
-
+  
 }
 
 const startTrading = async () => {
@@ -500,18 +307,19 @@ const startTrading = async () => {
   await trader();
   // setInterval(trader, intervalo * 1000);
   setInterval(async () => {
-    limiter.schedule(() => trader());
-  }, intervalo * 1000);
+	limiter.schedule(() => trader());
+}, intervalo * 1000);
 };
 
 function gravarJSON(nomeArquivo, dados) {
   return new Promise((resolve, reject) => {
-    const fs = require('fs');
-    let sureJSON = JSON.stringify(dados)
-    fs.writeFile(nomeArquivo, sureJSON, (err) => {
-      if (err) reject(err)
-      else resolve("Sucesso!")
-    })
+      const fs = require('fs');
+      let sureJSON = JSON.stringify(dados)    
+      // Gravando arquivo em'sure.json' . 
+      fs.writeFile(nomeArquivo, sureJSON, (err) => {  
+          if (err) reject(err)
+          else resolve("Sucesso!")
+      })
 
   })
 }
@@ -520,22 +328,11 @@ function gravarJSON(nomeArquivo, dados) {
 
 //---------------------TECLADO TELEGRAM-----------------------
 
-/* const replyMarkup = bot.inlineKeyboard([
-  [bot.inlineButton('\u{1F51B} Iniciar Robô', {callback: '/iniciar'}),bot.inlineButton('\u{1F6D1} Parar Robô', {callback: '/parar'})],
-  [bot.inlineButton('\u{1F4B0} Valor Inicial', {callback: '/valor'}),bot.inlineButton('\u{1F4D6} Ajuda', {callback: '/ajuda'})],
-  [bot.inlineButton('\u{1F9FE} Extrato', {callback: '/extrato'})]
-], {resize: true}); */
-
-const replyMarkup = Extra.markup(Markup.inlineKeyboard([
-  Markup.callbackButton('\u{1F51B} Iniciar Robô', 'iniciar'),
-  Markup.callbackButton('\u{1F6D1} Parar Robô', 'parar'),
-  Markup.callbackButton('\u{1F680} Acumular BTC', 'acbtc'),
-  Markup.callbackButton('\u{1F4B5} Acumular BRL', 'acbrl'),
-  //Markup.callbackButton('\u{1F911} Comprar BTC', 'comprar'),
-  //Markup.callbackButton('\u{1F911} Vender BTC', 'vender'),
-  Markup.callbackButton('\u{1F4BE} Atualizar Saldo', 'restart'),
-  Markup.callbackButton('\u{1F9FE} Extrato', 'extrato'),
-  Markup.callbackButton('\u{1F4D6} Ajuda', 'ajuda')
+const replyMarkup = Extra.markup(Markup.inlineKeyboard([ 
+    Markup.callbackButton('\u{1F51B} Iniciar Robô', 'iniciar'),
+    Markup.callbackButton('\u{1F6D1} Parar Robô', 'parar'),
+    Markup.callbackButton('\u{1F9FE} Extrato', 'extrato'),
+	Markup.callbackButton('\u{1F4D6} Ajuda', 'ajuda')
 ], { columns: 2 }))
 
 
@@ -557,65 +354,39 @@ bot.action('parar', ctx => {
   ctx.reply(`\u{1F6D1} Ok! Robô parado para operações...`, replyMarkup);
 });
 
-// Acumular BTC
-bot.action('acbtc', ctx => {
-  logger.info('Acumulando BTC.')
-  acbtc = true
-  acbrl = false
-  console.log('acbrl:', acbrl)
-  console.log('acbtc:', acbtc)
-  ctx.reply('\u{1F680} Acumulando BTC.');
-  checkExtrato();
-});
-
-// Acumular Real
-bot.action('acbrl', ctx => {
-  logger.info('Acumulando Real.')
-  acbtc = false
-  acbrl = true
-  console.log('acbrl:', acbrl)
-  console.log('acbtc:', acbtc)
-  ctx.reply(`\u{1F4B5} Acumulando Real.`, replyMarkup);
-  checkExtrato();
-});
-
 //exibe um resumo com os comandos disponíveis
 bot.action('ajuda', ctx => {
   logger.info('Comando Ajuda executado.')
   //bot.editMessageReplyMarkup(replyMarkup, [{chat_id: BOT_CHAT}])
   ctx.reply(
-    `<b>Comandos disponíveis:</b> 
+  `<b>Comandos disponíveis:</b> 
   ============  
   <b>\u{1F51B} Iniciar Robô:</b> Incia as operações. Default no primeiro acesso.\n
   <b>\u{1F6D1} Parar Robô:</b> Para as operações. Demais comandos ficam disponíveis.\n
-  <b>\u{1F4BE} Atualizar Saldo:</b> Atualiza o saldo no extrato.\n
-  <b>\u{1F9FE} Extrato:</b> Extrato com o saldo, valor de operação, lucro, etc.\n
-  <b>\u{1F680} Acumular BTC:</b> O bot irá acumular em BTC, sem vender o saldo disponível. Obs1.: o depósito inicial tem que estar igual ou superior ao saldo em BRL. Obs2.: Deve ser alterado nos dois bots do Telegram\n
-  <b>\u{1F4B5} Acumular BRL:</b> O bot irá acumular em BRL, que é o padrão de operação.
+  <b>\u{1F9FE} Extrato:</b> Extrato com o saldo, valor de operação, lucro, etc.
   ============
   `, replyMarkup)
 });
 
 //exibe uma lista das 10 últimas transações
 bot.command('report', ctx => {
-  logger.info('Comando Relatório executado.')
-  let resposta
-  const report = bc.trades().then(res => {
-    resposta = res;
-    for (let i = 0; i < resposta.length; i++) {
-      console.log(resposta)
-      ctx.reply(
-        'OP: ' + resposta[i].op + '\n' +
-        'BTC: ' + resposta[i].baseAmount + '\n' +
-        'BRL: ' + resposta[i].quoteAmount + '\n' +
-        'BRL/BTC: ' + resposta[i].efPrice + '\n' +
-        'Data: ' + moment(resposta[i].date).format("DD/MM/YYYY HH:mm")
-      );
-    }
-
-  }).catch(e => {
-    logger.error(`Comando Relatório: ${e}`)
-  });
+  logger.info('Comando Relatório executado.') 		
+	let resposta
+	const report = bc.trades().then(res => {
+			resposta = res;
+			 for(let i=0; i<resposta.length; i++){
+				console.log(resposta)
+				ctx.reply( 
+				'OP: ' + resposta[i].op + '\n' +
+				'BTC: ' + resposta[i].baseAmount + '\n' + 
+				'BRL: ' + resposta[i].quoteAmount + '\n'  +
+				'BRL/BTC: ' + resposta[i].efPrice + '\n' + 
+				'Data: ' + moment(resposta[i].date).format("DD/MM/YYYY HH:mm")
+				);
+			}	
+						
+    }).catch(e => {
+      logger.error(`Comando Relatório: ${e}`)});
 });
 
 //exibe o relatório com o extrato contendo saldo, lucro, tempo de operação, etc.
@@ -625,7 +396,7 @@ bot.action('extrato', ctx => {
 });
 
 //atualiza o saldo de operação
-bot.action('restart', ctx => {
+bot.command('restart', msg => {
   logger.info('Comando Restart executado.')
   ctx.reply('Atualizando saldo inicial...');
   try {
@@ -635,13 +406,13 @@ bot.action('restart', ctx => {
     logger.error(`Comando Restart:
     ${error}`)
     ctx.reply('error');
-  }
+  }  
 });
 
 //altera a data inicial
 bot.command(/^\/inicio (.+)$/, ctx => {
   logger.info('Comando Inicio executado.')
-  dataInicial = ctx.match[0];
+  dataInicial = ctx.match[0];  
   ctx.reply(`Ok! Data Incial alterado para: ${dataInicial}`);
 });
 
@@ -659,18 +430,15 @@ function lucroreal(value1, value2) {
 }
 
 function imprimirMensagem(message, throwError = false) {
-  console.log(`[${play ? `ROBÔ EM OPERAÇÃO` : `ROBÔ PARADO`}] - ${message}`);
+  console.log(`[${play ? `ROBÔ EM OPERAÇÃO`:`ROBÔ PARADO` }] - ${message}`);
   if (throwError) {
     throw new Error(message);
   }
 }
 
-
-
 //---------------------AGENDAMENTO API TELEGRAM-----------------------
 
-// Envia uma mensagem a cada 24h
-
+// Envia mensagem diariamente para avisar que o bot está ativo
 cron.schedule("33 18 * * *", () => {
   try {
     //shell.exec('service ntp stop');
@@ -685,12 +453,12 @@ cron.schedule("33 18 * * *", () => {
 //--------------------- FIM AGENDAMENTO API TELEGRAM-----------------------
 
 //---------------------START BOT-----------------------
-async function start() {
-  init();
-  await inicializarSaldo();
-  await checkExtrato();
-  await checkInterval();
-  await startTrading();
+async function start() {      
+      init();
+      await inicializarSaldo();     
+      await checkExtrato();
+      await checkInterval();
+      await startTrading();  
 }
 bot.launch()
 start().catch(e => imprimirMensagem(JSON.stringify(e), 'error'));
