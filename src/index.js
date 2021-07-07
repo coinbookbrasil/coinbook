@@ -618,7 +618,7 @@ bot.action('ajuda', ctx => {
   <b>\u{1F6D1} Parar Robô:</b> Para as operações. Demais comandos ficam disponíveis.\n
   <b>\u{1F4BE} Atualizar Saldo:</b> Atualiza o saldo no extrato.\n
   <b>\u{1F9FE} Extrato:</b> Extrato com o saldo, valor de operação, lucro, etc.\n
-  <b>\u{1F680} Acumular BTC:</b> O bot irá acumular em BTC, sem vender o saldo disponível. Obs.: o depósito inicial tem que estar igual ou superior ao saldo em BRL.\n
+  <b>\u{1F680} Acumular BTC:</b> O bot irá acumular em BTC, sem vender o saldo disponível. Obs1.: o depósito inicial tem que estar igual ou superior ao saldo em BRL. Obs2.: Deve ser alterado nos dois bots do Telegram\n
   <b>\u{1F4B5} Acumular BRL:</b> O bot irá acumular em BRL, que é o padrão de operação.
   ============
   `, replyMarkup)
