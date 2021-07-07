@@ -11,7 +11,6 @@ const cron = require('node-cron');
 const axios = require('axios');
 const Bottleneck = require('bottleneck');
 // Binance
-const ccxt = require('ccxt');
 const Binance = require("node-binance-api")
 const dayjs = require('dayjs');
 const winston = require('winston');
@@ -117,8 +116,8 @@ const init = () => {
 const checkExtrato = async () => {
   let { BRL, BTC } = await bc.balance();
   let lucro = await bc.ticker();
-  let jsonData = await JSON.parse(fs.readFileSync("./lucro.json", "utf8"))
-  let lucroAcumuladoTotal = await jsonData.lucro
+  //let jsonData = await JSON.parse(fs.readFileSync("./lucro.json", "utf8"))
+  //let lucroAcumuladoTotal = await jsonData.lucro
   let valorTotal = BRL
   imprimirMensagem(`Balances:  BRL: ${BRL} - BTC: ${BTC} `);
   let moment1 = moment();
@@ -139,7 +138,6 @@ const checkExtrato = async () => {
   Lucro Parcial: ${lucroreal(valorTotal, lucro.last * BTC).toFixed(2)}% (R$ ${(lucro.last * BTC).toFixed(2)})
   Lucro Realizado: ${lucroRealizado.toFixed(2)}% (R$ ${(valorTotal - valorInicial).toFixed(2)});
   <b>Lucro Total: ${(lucroreal(valorTotal, lucro.last * BTC) + lucroRealizado).toFixed(2)}% (R$ ${(lucro.last * BTC + (valorTotal - valorInicial)).toFixed(2)})</b>
-  <b>Lucro Acumulado: ${lucroAcumuladoTotal.toFixed(2)}%</b>
   ============
   `, replyMarkup.HTML())
   let nAmount = Number(montante);
