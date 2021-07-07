@@ -13,7 +13,7 @@
   "moedaCorrente": "BRL",
   "dataInicial": "",
   "minPercentualLucro": 0.03,
-  "intervalo": 2.5,
+  "intervalo": 4.0,
   "host1": "",
   "host2": "",
   "port": "80",
