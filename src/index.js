@@ -2,7 +2,6 @@ const Biscoint = require('biscoint-api-node')
 var moment = require('moment');
 var numeral = require('numeral');
 const logger = require('./logger');
-//const TeleBot = require('telebot');
 const Telegraf = require('telegraf')
 const Extra = require('telegraf/extra')
 const Markup = require('telegraf/markup')
@@ -10,11 +9,6 @@ const _ = require('lodash');
 const cron = require('node-cron');
 const axios = require('axios');
 const Bottleneck = require('bottleneck');
-// Binance
-const Binance = require("node-binance-api")
-const dayjs = require('dayjs');
-const winston = require('winston');
-const { program } = require('commander');
 const ora = require('ora');
 const chalk = require('chalk');
 const json = require('json-update')
@@ -44,14 +38,6 @@ if (runInPKG) {
   config = require(path.join(deployPath, 'config.json'));
 } else {
   config = require('../config.json')
-}
-
-// Função para registrar o saldo acumulado do bot
-async function lucroAcumulado(profit) {
-  let data = await json.load('./lucro.json');
-  let lucro = data.lucro + profit;
-  await json.update('./lucro.json', { lucro: lucro });
-  //console.log(lucro.toFixed(2))
 }
 
 // configurações das variáveis
@@ -116,8 +102,6 @@ const init = () => {
 const checkExtrato = async () => {
   let { BRL, BTC } = await bc.balance();
   let lucro = await bc.ticker();
-  //let jsonData = await JSON.parse(fs.readFileSync("./lucro.json", "utf8"))
-  //let lucroAcumuladoTotal = await jsonData.lucro
   let valorTotal = BRL
   imprimirMensagem(`Balances:  BRL: ${BRL} - BTC: ${BTC} `);
   let moment1 = moment();
@@ -154,7 +138,6 @@ const inicializarSaldo = async () => {
     let { BRL, BTC } = await bc.balance();
     montante = BRL
   } catch (error) {
-    //imprimirMensagem(JSON.stringify(error));
     logger.error(`Erro: ${error}`)
   }
 }
@@ -405,7 +388,6 @@ async function trader() {
                     logger.info(`Lucro realizado. Valor: ${BTC}`)
                   }
                 } catch (error) {
-                  //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
                   logger.error(`${JSON.stringify(error)}`)
                 }
               } else if (BTC >= 0.001) {
@@ -420,7 +402,6 @@ async function trader() {
                     logger.info(`Lucro realizado. Valor: ${BTC}`)
                   }
                 } catch (error) {
-                  //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
                   logger.error(`${JSON.stringify(error)}`)
                 }
               }
@@ -428,7 +409,6 @@ async function trader() {
               operando = false
 
             } catch (error) {
-              //imprimirMensagem(`Error on confirm offer: ${JSON.stringify(error)}`);
               logger.error(`Erro ao confirmar a oferta: ${JSON.stringify(error)}`)
               bot.telegram.sendMessage(BOT_CHAT, `${error.error}. ${error.details}`);
               // Se acbtc for true, faz a venda proporcional
@@ -444,7 +424,6 @@ async function trader() {
                     logger.info(`Lucro realizado. Valor: ${BTC}`)
                   }
                 } catch (error) {
-                  //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
                   logger.error(`${JSON.stringify(error)}`)
                 }
               } else if (BTC >= 0.001) {
@@ -459,7 +438,6 @@ async function trader() {
                     logger.info(`Lucro realizado. Valor: ${BTC}`)
                   }
                 } catch (error) {
-                  //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
                   logger.error(`${JSON.stringify(error)}`)
                 }
               }
@@ -483,7 +461,6 @@ async function trader() {
                 logger.info(`Lucro realizado. Valor: ${BTC}`)
               }
             } catch (error) {
-              //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
               logger.error(`${JSON.stringify(error)}`)
             }
           } else if (BTC >= 0.001) {
@@ -498,7 +475,6 @@ async function trader() {
                 logger.info(`Lucro realizado. Valor: ${BTC}`)
               }
             } catch (error) {
-              //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
               logger.error(`${JSON.stringify(error)}`)
             }
           }
@@ -529,11 +505,9 @@ const startTrading = async () => {
 };
 
 function gravarJSON(nomeArquivo, dados) {
-
   return new Promise((resolve, reject) => {
     const fs = require('fs');
     let sureJSON = JSON.stringify(dados)
-    // Gravando arquivo em'sure.json' . 
     fs.writeFile(nomeArquivo, sureJSON, (err) => {
       if (err) reject(err)
       else resolve("Sucesso!")
@@ -671,184 +645,6 @@ bot.command(/^\/inicio (.+)$/, ctx => {
   ctx.reply(`Ok! Data Incial alterado para: ${dataInicial}`);
 });
 
-//Get Binance Spot Balance
-let available_balances = []
-
-//venda manual de valores
-/* bot.on(/^\/venda (.+)$/, (msg, props) => {
-  //imprimirMensagem('Tentando realizar a venda manual');
-  let valor = props.match[1];
-  logger.info(`Comando Venda executado. Valor inserido ${valor}`)
-  if(valor.match(/,/)){
-    bot.sendMessage(BOT_CHAT, 
-      `Erro! Tente um valor com o seguinte formato:
-       Insira apenas números;
-       Valores positivos;
-       Utilize ponto para separar as casas decimais.
-       Ex.: 
-       1000.00 \u{2714} 
-       1000,00 \u{274C}
-       R$ 1000,00 \u{274C}
-       Mil reais \u{274C}     
-       `);
-       logger.warn(`Comando Venda. Valor mal formatado, inserido o caracterer ','`)
-  } else{
-    if (numeral.validate(valor,'en')){
-       valor = numeral(valor).format('0[.]00000000')
-       if(Number(valor)>0){
-         realizarLucro(Number(valor))
-           .then(res =>{
-             //imprimirMensagem('Venda realizada com sucesso!');
-             bot.sendMessage(BOT_CHAT, `Ok! venda realizada com sucesso!` );
-             logger.info(`Comando Venda. Venda manual realizada. Valor: ${valor}`)
-           })
-           .catch(e =>{
-             //imprimirMensagem(`Não foi possível realizar a venda`);
-             logger.error(`Comando Venda. Não foi possível realizar a venda. Erro: ${e}`)
-           })     
-       }else{
-          bot.sendMessage(BOT_CHAT, `Insira um valor válido` );
-          logger.warn(`Comando Venda. Valor inserido menor que Zero. Valor digitado pelo usuário: ${valor}`)
-       }
-    }else {
-      bot.sendMessage(BOT_CHAT, 
-      `Erro! Tente um valor com o seguinte formato:
-       Insira apenas números;
-       Valores positivos;
-       Utilize ponto para separar as casas decimais.
-       Ex.: 
-       1000.00 \u{2714} 
-       1000,00 \u{274C}
-       R$ 1000,00 \u{274C}
-       Mil reais \u{274C}     
-       `
-        );
-        logger.warn(`Comando Venda. Valor mal formatado, inserido o caracterer inválido. Valor digitado pelo usuário: ${valor}`)
-    }
-  }
-}); */
-
-//Altera o valor do quantitativo em operação (amount)
-/* bot.on(/^\/usar (.+)$/, (msg, props) => {  
-  let valor = props.match[1]  
-  logger.info(`Comando Valor para Operação executado. Valor: ${valor}`)
-  if(valor.match(/,/)){
-    bot.sendMessage(BOT_CHAT, 
-      `Erro! Tente um valor com o seguinte formato:
-       Insira apenas números;
-       Valores positivos;
-       Utilize ponto para separar as casas decimais.
-       Ex.: 
-       1000.00 \u{2714} 
-       1000,00 \u{274C}
-       R$ 1000,00 \u{274C}
-       Mil reais \u{274C}     
-       `);
-       logger.warn(`Comando Valor para Operação. Valor mal formatado, inserido o caracterer ','`)
-  } else {
-    if (numeral.validate(valor,'en')){
-      valor = numeral(valor).format('0[.]00')
-      imprimirMensagem('Atualizando o montante para operação...');
-      (async() => {
-        try {
-          if(Number(valor)>0){
-            let { BRL, BTC } = await bc.balance();
-            if(Number(valor) <= BRL) {
-                montante = Number(valor);  
-                bot.sendMessage(BOT_CHAT, `Ok! Operando com: ${valor}` );
-                logger.info(`Comando Valor para Operação. Valor para operação alterado para ${valor}`)
-              } else {
-                bot.sendMessage(BOT_CHAT, `Saldo insuficiente!` );
-                logger.warn(`Comando Valor para Operação. Saldo insuficiente. Valor digitado pelo usuário: ${valor}`)
-              }     
-          }else{
-              bot.sendMessage(BOT_CHAT, `Insira um valor válido` );
-              logger.warn(`Comando Valor para Operação. Valor inserido menor que Zero. Valor digitado pelo usuário: ${valor}`)
-          }
-        } catch (error) {
-          bot.sendMessage(BOT_CHAT, `Ocorreu um erro inesperado, tente novamente mais tarde.` );
-          logger.error(`Comando Valor para Operação. Ocorreu um erro inesperado: ${error}`)
-          //imprimirMensagem(JSON.stringify(error));
-        }  
-      })()
-    }else {
-      bot.sendMessage(BOT_CHAT, 
-      `Erro! Tente um valor com o seguinte formato:
-       Insira apenas números;
-       Valores positivos;
-       Utilize ponto para separar as casas decimais.
-       Ex.: 
-       1000.00 \u{2714} 
-       1000,00 \u{274C}
-       R$ 1000,00 \u{274C}
-       Mil reais \u{274C}     
-       `
-        );
-        logger.warn(`Comando Valor para Operação. Valor mal formatado, inserido o caracterer inválido. Valor digitado pelo usuário: ${valor}`)
-    }
-  }
-});
- */
-//Altera o valor inicial registrado para fins de cálculo do lucro
-/* bot.on('/valor', msg => {  
-  // Ask user name
-  return bot.sendMessage(BOT_CHAT, 'Digite um valor inicial para cálculo do lucro. Ex.: 1000.00 ', {ask: 'valorInicial'});
-
-});
- */
-/* bot.on('ask.valorInicial', msg => {
-  console.log(msg.text)
-  let valor = msg.text  
-  logger.info(`Comando Valor Inicial executado. Valor: ${valor}`)
-  if(valor.match(/,/)){
-    bot.sendMessage(BOT_CHAT, 
-      `Erro! Tente um valor com o seguinte formato:
-       Insira apenas números;
-       Valores positivos;
-       Utilize ponto para separar as casas decimais.
-       Ex.: 
-       1000.00 \u{2714} 
-       1000,00 \u{274C}
-       R$ 1000,00 \u{274C}
-       Mil reais \u{274C}     
-       `, replyMarkup);
-       logger.warn(`Comando Valor Inicial. Valor mal formatado, inserido o caracterer ','`)
-  } else {
-    if (numeral.validate(valor,'en')){
-      valor = numeral(valor).format('0[.]00')
-      imprimirMensagem('Atualizando o valor inicial para operação...');
-      try {
-        if(Number(valor)>0){
-            valorInicial = Number(valor);  
-            bot.sendMessage(BOT_CHAT, `Ok! valor inicial alterado para: ${valor}`, replyMarkup );
-            logger.info(`Comando Valor Inicial. Valor Inicial alterado para ${valor}`)   
-        }else{
-            bot.sendMessage(BOT_CHAT, `Insira um valor válido.`, replyMarkup );
-            logger.warn(`Comando Valor Inicial. Valor inserido menor que Zero. Valor digitado pelo usuário: ${valor}`, replyMarkup)
-        }
-      }catch (error) {
-        bot.sendMessage(BOT_CHAT, `Ocorreu um erro inesperado, tente novamente mais tarde.`, replyMarkup );
-        logger.error(`Comando Valor Inicial. Ocorreu um erro inesperado: ${error}`)
-        //imprimirMensagem(JSON.stringify(error));
-      }  
-    }else {
-      bot.sendMessage(BOT_CHAT, 
-      `Erro! Tente um valor com o seguinte formato:
-       Insira apenas números;
-       Valores positivos;
-       Utilize ponto para separar as casas decimais.
-       Ex.: 
-       1000.00 \u{2714} 
-       1000,00 \u{274C}
-       R$ 1000,00 \u{274C}
-       Mil reais \u{274C}     
-       `, replyMarkup);
-      logger.warn(`Comando Valor Inicial. Valor mal formatado, inserido o caracterer inválido. Valor digitado pelo usuário: ${valor}`)  
-    }
-  }
-});
-
- */
 //---------------------FIM BOT TELEGRAM-----------------------
 
 
