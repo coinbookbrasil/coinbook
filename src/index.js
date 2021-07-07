@@ -559,8 +559,8 @@ const replyMarkup = Extra.markup(Markup.inlineKeyboard([
   Markup.callbackButton('\u{1F6D1} Parar Robô', 'parar'),
   Markup.callbackButton('\u{1F680} Acumular BTC', 'acbtc'),
   Markup.callbackButton('\u{1F4B5} Acumular BRL', 'acbrl'),
-  Markup.callbackButton('\u{1F911} Comprar BTC', 'comprar'),
-  Markup.callbackButton('\u{1F911} Vender BTC', 'vender'),
+  //Markup.callbackButton('\u{1F911} Comprar BTC', 'comprar'),
+  //Markup.callbackButton('\u{1F911} Vender BTC', 'vender'),
   Markup.callbackButton('\u{1F4BE} Atualizar Saldo', 'restart'),
   Markup.callbackButton('\u{1F9FE} Extrato', 'extrato'),
   Markup.callbackButton('\u{1F4D6} Ajuda', 'ajuda')
