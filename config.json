@@ -14,9 +14,9 @@
   "dataInicial": "",
   "minPercentualLucro": 0.03,
   "intervalo": 2.5,
-  "host1": "143.198.237.4",
-  "host2": "64.227.99.7",
+  "host1": "",
+  "host2": "",
   "port": "80",
   "moedaAcumular": "BRL",
-  "multibot": true
+  "multibot": false
 }

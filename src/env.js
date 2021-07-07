@@ -20,13 +20,13 @@ module.exports = envalid.cleanEnv(process.env, {
 	moedaAcumular: envalid.str({ default: "BRL" }),
 	dataInicial: envalid.str({ default: "01/01/2021" }),
 	minPercentualLucro: envalid.num({ default: "0.03" }),
-	intervalo: envalid.num({ default: "2.5" }),
-	host1: envalid.str({ default: "143.198.237.4" }),
-    host2: envalid.str({ default: "64.227.99.7" }),
+	intervalo: envalid.num({ default: "4.0" }),
+	host1: envalid.str({ default: "" }),
+    host2: envalid.str({ default: "" }),
     port: envalid.num({
         default: 80,
         desc: "The port to start the server on",
     }),
-    multibot: envalid.bool({ default: true }),
+    multibot: envalid.bool({ default: false }),
     VERSION: envalid.str({ default: pjson.version }),
 })

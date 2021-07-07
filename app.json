@@ -27,11 +27,6 @@
         "description": "Chat id do Telegram",
         "required": true
       },
-      "botId": {
-        "description": "Id do primeiro bot. Ex.: bot_1 e bot_2",
-        "required": true,
-		"value": "bot_1 ou bot_2"
-      },
       "montante": {
         "description": "Valor que você irá operar",
         "required": true,
@@ -46,16 +41,6 @@
         "description": "Data que o bot iniciou. xx/xx/xxxx",
         "required": true,
 		"value": "15/03/2020"
-      },
-      "minPercentualLucro": {
-        "description": "Percentual de lucro para ativar o bot",
-        "required": true,
-		"value": "0.03"
-      },
-      "moedaAcumular": {
-        "description": "Moeda padrão para acumular",
-        "required": true,
-		"value": "BRL"
       }
     }
   }
