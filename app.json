@@ -32,6 +32,11 @@
         "required": true,
 		"value": "500.00"
       },
+      "minPercentualLucro": {
+        "description": "Percentual de lucro para acionar o bot",
+        "required": true,
+		"value": "0.03"
+      },
       "valorInicial": {
         "description": "Valor inicial que você depositou",
         "required": true,
