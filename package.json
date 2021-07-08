@@ -8,7 +8,7 @@
     "description": "Arbitragem com Bitcoin",
     "main": "./src/index.js",
     "keywords": [
-        "bitcoin",
+        "coinbook",
         "cryptocurrency",
         "trading",
         "bot",

@@ -19,7 +19,7 @@
         "description": "Sua API Secret da Biscoint",
         "required": true
       },
-	    "BOT_CHAT": {
+	  "BOT_CHAT": {
         "description": "Chat id do Telegram",
         "required": true
       },
