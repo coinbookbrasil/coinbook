@@ -1,0 +1,50 @@
+{
+    "name": "bitcoin",
+    "private": true,
+    "version": "1.8.1",
+    "engine": {
+        "node": ">=0.12"
+    },
+    "description": "Arbitragem com Bitcoin",
+    "main": "./src/index.js",
+    "keywords": [
+        "bitcoin",
+        "cryptocurrency",
+        "trading",
+        "bot",
+        "alert",
+        "signal",
+        "backtesting"
+    ],
+    "author": "Coinbook",
+    "license": "ISC",
+    "scripts": {
+        "start": "node ./src/index.js"
+    },
+    "dependencies": {
+        "axios": "^0.19.2",
+        "biscoint-api-node": "^1.2.4",
+        "bottleneck": "^2.19.5",
+        "commander": "^8.0.0",
+        "dayjs": "^1.10.5",
+        "dotenv": "8.2.0",
+        "envalid": "7.0.0",
+        "esm": "^3.2.25",
+        "fs": "0.0.1-security",
+        "i": "^0.3.6",
+        "json-update": "^5.3.0",
+        "loader": "^2.1.1",
+        "lodash": "^4.17.15",
+        "moment": "^2.24.0",
+        "node-cron": "^2.0.3",
+        "npm": "^7.19.1",
+        "numeral": "^2.0.6",
+        "ora": "^5.4.1",
+        "path": "^0.12.7",
+        "shelljs": "^0.8.3",
+        "telegraf": "^3.38.0",
+        "utf8": "^3.0.0",
+        "winston": "^3.3.3",
+        "winston-daily-rotate-file": "^4.5.5"
+    }
+}

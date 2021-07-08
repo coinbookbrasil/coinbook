@@ -1,0 +1,22 @@
+{
+  "apiKey": "",
+  "apiSecret": "",
+  "BOT_TOKEN": "",
+  "BOT_CHAT": "",
+  "botId": "bot_1",
+  "apiKeyBinance": "",
+  "apiSecretBinance": "",
+  "depositoUSDT": 30,
+  "dataInicialBinance": "27/04/2021",
+  "montante": 50.00,
+  "valorInicial": 50.00,
+  "moedaCorrente": "BRL",
+  "dataInicial": "",
+  "minPercentualLucro": 0.03,
+  "intervalo": 4.0,
+  "host1": "",
+  "host2": "",
+  "port": "80",
+  "moedaAcumular": "BRL",
+  "multibot": false
+}
