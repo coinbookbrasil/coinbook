@@ -592,6 +592,7 @@ bot.action('restart', ctx => {
   try {
     inicializarSaldo();
     ctx.reply('Ok! Saldo inicial atualizado.');
+	checkExtrato();
   } catch (error) {
     logger.error(`Comando Restart:
     ${error}`)
