@@ -579,6 +579,20 @@ bot.action('ajuda', ctx => {
   `, replyMarkup)
 });
 
+bot.command('ajuda', ctx => {
+  logger.info('Comando Ajuda executado.')
+  //bot.editMessageReplyMarkup(replyMarkup, [{chat_id: BOT_CHAT}])
+  ctx.reply(
+    `<b>Comandos disponíveis:</b> 
+  ============  
+  <b>\u{1F51B} Iniciar Robô:</b> Incia as operações. Default no primeiro acesso.\n
+  <b>\u{1F6D1} Parar Robô:</b> Para as operações. Demais comandos ficam disponíveis.\n
+  <b>\u{1F4BE} Atualizar Saldo:</b> Atualiza o saldo no extrato.\n
+  <b>\u{1F9FE} Extrato:</b> Extrato com o saldo, valor de operação, lucro, etc.
+  ============
+  `, replyMarkup)
+});
+
 //exibe o relatório com o extrato contendo saldo, lucro, tempo de operação, etc.
 bot.action('extrato', ctx => {
   logger.info('Comando Extrato executado')
