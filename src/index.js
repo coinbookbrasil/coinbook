@@ -1,14 +1,14 @@
 const Biscoint = require ('biscoint-api-node')
-var moment = require('moment');
-var numeral = require('numeral');
-const logger = require('./logger');
+var moment = require('moment')
+var numeral = require('numeral')
+const logger = require('./logger')
 const Telegraf = require('telegraf')
 const Extra = require('telegraf/extra')
 const Markup = require('telegraf/markup')
-const _ = require('lodash');
-const cron = require('node-cron');
-const axios = require('axios');
-const Bottleneck = require('bottleneck');
+const _ = require('lodash')
+const cron = require('node-cron')
+const axios = require('axios')
+const Bottleneck = require('bottleneck')
 let operando = false
 let play = true
 
