@@ -32,7 +32,7 @@ if(runInPKG) {
   config = require('../config.json')
 }
 
-// read the configurations
+// configurações
 let { apiKey, apiSecret, montante, valorInicial, moedaCorrente, minPercentualLucro, BOT_TOKEN, BOT_CHAT, dataInicial, botId, intervalo } = require("./env")
 let bc, isQuote;
 let robo = new Object()
