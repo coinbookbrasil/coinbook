@@ -188,12 +188,14 @@ async function trader() {
           try {
             buyOffer = await bc.offer({
               amount: montante,
+			  base: 'BTC',
               isQuote,
               op: 'buy',
             });
         
             sellOffer = await bc.offer({
               amount: montante,
+			  base: 'BTC',
               isQuote,
               op: 'sell',
             });
