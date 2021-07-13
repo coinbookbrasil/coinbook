@@ -142,7 +142,7 @@ async function realizarLucro(valor){
   return new Promise((resolve, reject) => {
     (async() => {
       try {        
-        if (valor>=0.0001){
+        if (valor>=0.001){
           let sellLucro = await bc.offer({
             amount: valor,
             isQuote: false,
@@ -163,8 +163,8 @@ async function realizarLucro(valor){
           }
         }
         else {
-          bot.telegram.sendMessage(BOT_CHAT, "Valor de venda abaixo do limite mínimo de 0.0001");
-          logger.warn(`Valor de venda abaixo do limite mínimo de 0.0001`)
+          bot.telegram.sendMessage(BOT_CHAT, "Valor de venda abaixo do limite mínimo de 0.001");
+          logger.warn(`Valor de venda abaixo do limite mínimo de 0.001`)
           reject(false)
         }      
       } catch (error) {
@@ -220,7 +220,7 @@ async function trader() {
                 bot.telegram.sendMessage(BOT_CHAT, `\u{1F911} Sucesso! Lucro: + ${profit.toFixed(3)}% \n R$ ${profitBRL.toFixed(2)}`, replyMarkup);
                 logger.info(`Sucesso! Lucro: + ${profit.toFixed(3)}% \n R$ ${profitBRL.toFixed(2)}`)
                 let { BRL, BTC } = await bc.balance();
-                if(BTC >= 0.0001){
+                if(BTC >= 0.001){
                   try {
                     bot.telegram.sendMessage(BOT_CHAT, "Tentando realizar o lucro...");
                     let lucroRealizado = await realizarLucro(BTC)
@@ -240,7 +240,7 @@ async function trader() {
                 logger.error(`Erro ao confirmar a oferta: ${JSON.stringify(error)}`)     
                 try {
                   let { BRL, BTC } = await bc.balance();              
-                  if(BTC >= 0.0001){
+                  if(BTC >= 0.001){
                     bot.telegram.sendMessage(BOT_CHAT, "Não foi possível confirmar a venda de BTC. O BTC será vendido a mercado!");
                     let lucroRealizado = await realizarLucro(BTC)
                     if(lucroRealizado) {
@@ -260,7 +260,7 @@ async function trader() {
             logger.error(`Erro ao obter oferta: ${JSON.stringify(error)}`)
             try {
               let { BRL, BTC } = await bc.balance();              
-              if(BTC >= 0.0001){
+              if(BTC >= 0.001){
                 bot.telegram.sendMessage(BOT_CHAT, "Não foi possível confirmar a venda de BTC. O BTC será vendido a mercado!");
                 let lucroRealizado = await realizarLucro(BTC)
                 if(lucroRealizado) {
