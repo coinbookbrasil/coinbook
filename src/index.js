@@ -158,18 +158,18 @@ async function realizarLucro(valor){
             resolve(true)     
           } catch (error) {
             bot.telegram.sendMessage(BOT_CHAT, `${error.error}. ${error.details} `);
-            logger.error(`${error.error}. ${error.details}`)
+            //logger.error(`${error.error}. ${error.details}`)
             reject(false)
           }
         }
         else {
           bot.telegram.sendMessage(BOT_CHAT, "Valor de venda abaixo do limite mínimo de 0.001");
-          logger.warn(`Valor de venda abaixo do limite mínimo de 0.001`)
+          //logger.warn(`Valor de venda abaixo do limite mínimo de 0.001`)
           reject(false)
         }      
       } catch (error) {
         bot.telegram.sendMessage(BOT_CHAT, `${error.error}. ${error.details} `);
-        logger.error(`${error.error}. ${error.details}`)
+        //logger.error(`${error.error}. ${error.details}`)
         reject(false)
       }
     })();
@@ -230,14 +230,15 @@ async function trader() {
                     }
                   } catch (error) {
                     //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
-                    logger.error(`${JSON.stringify(error)}`)
+		    bot.telegram.sendMessage(BOT_CHAT, `${JSON.stringify(error)}`);
+                    //logger.error(`${JSON.stringify(error)}`)
                   }          
                 }
                 operando=false
   
               } catch (error) {
                 //imprimirMensagem(`Error on confirm offer: ${JSON.stringify(error)}`);
-                logger.error(`Erro ao confirmar a oferta: ${JSON.stringify(error)}`)     
+                bot.telegram.sendMessage(BOT_CHAT, `${JSON.stringify(error)}`);     
                 try {
                   let { BRL, BTC } = await bc.balance();              
                   if(BTC >= 0.001){
@@ -250,14 +251,16 @@ async function trader() {
                   } 
                 } catch (error) {
                       //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
-                      logger.error(`${JSON.stringify(error)}`)
+                      //logger.error(`${JSON.stringify(error)}`)
+		      bot.telegram.sendMessage(BOT_CHAT, `${JSON.stringify(error)}`);
                   }          
                 operando=false
               }
             }
           } catch (error) {
             //imprimirMensagem(`Error on get offer': ${JSON.stringify(error)}`);
-            logger.error(`Erro ao obter oferta: ${JSON.stringify(error)}`)
+            //logger.error(`Erro ao obter oferta: ${JSON.stringify(error)}`)
+		  bot.telegram.sendMessage(BOT_CHAT, `${JSON.stringify(error)}`);
             try {
               let { BRL, BTC } = await bc.balance();              
               if(BTC >= 0.001){
@@ -270,7 +273,8 @@ async function trader() {
               } 
             } catch (error) {
                   //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
-                  logger.error(`${JSON.stringify(error)}`)
+                  //logger.error(`${JSON.stringify(error)}`)
+		    bot.telegram.sendMessage(BOT_CHAT, `${JSON.stringify(error)}`);
               }          
             operando=false
           }
