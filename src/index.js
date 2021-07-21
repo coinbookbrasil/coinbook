@@ -12,8 +12,8 @@ const Bottleneck = require('bottleneck')
 let operando = false
 let play = true
 
-const PKG_TOP_DIR = 'snapshot';
-const path = require('path' );
+const PKG_TOP_DIR = 'snapshot'
+const path = require('path' )
 
 const runInPKG = (function(){
   const pathParsed = path.parse(__dirname);
