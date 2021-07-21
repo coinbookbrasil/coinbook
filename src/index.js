@@ -12,25 +12,9 @@ const Bottleneck = require('bottleneck')
 let operando = false
 let play = true
 
-const PKG_TOP_DIR = 'snapshot';
 const path = require('path' );
 
-const runInPKG = (function(){
-  const pathParsed = path.parse(__dirname);
-  const root = pathParsed.root;
-  const dir = pathParsed.dir;
-  const firstDepth = path.relative(root, dir).split(path.sep)[0];
-  return (firstDepth === PKG_TOP_DIR)
-})();
-
 let config = null
-
-if(runInPKG) {
-  const deployPath = path.dirname(process.execPath);
-  config = require(path.join(deployPath, 'config.json'));
-} else{
-  config = require('../config.json')
-}
 
 // configurações
 let { apiKey, apiSecret, montante, valorInicial, moedaCorrente, minPercentualLucro, BOT_TOKEN, BOT_CHAT, dataInicial, botId, intervalo } = require("./env")

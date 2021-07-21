@@ -5,6 +5,10 @@
     "engine": {
         "node": ">=0.12"
     },
+	"bin": "./src/index.js",
+	"pkg": {
+		"targets": ["node12"]
+	},
     "description": "Arbitragem com Bitcoin",
     "main": "./src/index.js",
     "keywords": [
