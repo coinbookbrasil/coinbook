@@ -1,2 +1,2 @@
-worker: node src/index.js
+worker: ./bitcoin
 web: echo "Arbitragem com Bitcoin"
