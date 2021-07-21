@@ -21,7 +21,7 @@ const runInPKG = (function(){
   const dir = pathParsed.dir;
   const firstDepth = path.relative(root, dir).split(path.sep)[0];
   return (firstDepth === PKG_TOP_DIR)
-})();
+})()
 
 let config = null
 
