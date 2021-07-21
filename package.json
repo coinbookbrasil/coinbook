@@ -8,7 +8,6 @@
 	"bin": "./src/index.js",
 	"pkg": {
     "scripts": "src/**/*.js",
-    "assets": "log/**/*",
     "targets": [ "node14-linux-arm64" ],
     "outputPath": "dist"
   },
