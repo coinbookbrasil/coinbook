@@ -7,8 +7,11 @@
     },
 	"bin": "./src/index.js",
 	"pkg": {
-		"targets": ["node12"]
-	},
+    "scripts": "src/**/*.js",
+    "assets": "log/**/*",
+    "targets": [ "node14-linux-arm64" ],
+    "outputPath": "dist"
+  }
     "description": "Arbitragem com Bitcoin",
     "main": "./src/index.js",
     "keywords": [
