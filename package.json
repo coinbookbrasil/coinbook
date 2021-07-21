@@ -5,12 +5,6 @@
     "engine": {
         "node": ">=0.12"
     },
-	"bin": "./src/index.js",
-	"pkg": {
-    "scripts": "build/**/*.js",
-    "targets": [ "node12" ],
-    "outputPath": "dist"
-  },
     "description": "Arbitragem com Bitcoin",
     "main": "./src/index.js",
     "keywords": [
