@@ -1,2 +1,2 @@
-worker: chmod +x bitcoin && ./bitcoin
+worker: node src/index.js
 web: echo "Arbitragem com Bitcoin"
