@@ -126,7 +126,7 @@ const checkInterval = async () => {
   const { endpoints } = await bc.meta();
   const { windowMs, maxRequests } = endpoints.offer.post.rateLimit;
   imprimirMensagem(`Limite de requisições: ${maxRequests} requisições por ${windowMs}ms.`);
-  let minInterval = 2 * windowMs / maxRequests / 1000;
+  let minInterval = 2.0 * parseFloat(windowMs) / parseFloat(maxRequests) / 1000.0;
 
   if (!intervalo) {
     intervalo = minInterval;
@@ -298,7 +298,7 @@ const startTrading = async () => {
   // setInterval(trader, intervalo * 1000);
   setInterval(async () => {
 	limiter.schedule(() => trader());
-}, intervalo * 1000);
+}, intervalo * 1000.0);
 };
 
 function gravarJSON(nomeArquivo, dados) {
