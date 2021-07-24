@@ -30,7 +30,7 @@
       "montante": {
         "description": "Valor que você irá operar",
         "required": true,
-		"value": "500.00"
+		"value": "300.00"
       },
       "minPercentualLucro": {
         "description": "Percentual de lucro para acionar o bot",
@@ -40,7 +40,7 @@
       "valorInicial": {
         "description": "Valor inicial que você depositou",
         "required": true,
-		"value": "500.00"
+		"value": "300.00"
       },
       "dataInicial": {
         "description": "Data que o bot iniciou. xx/xx/xxxx",
