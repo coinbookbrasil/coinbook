@@ -9,7 +9,7 @@
   "moedaCorrente": "BRL",
   "dataInicial": "07/02/2021",
   "minPercentualLucro": 0.03,
-  "intervalo": 4.0,
+  "intervalo": null,
   "host": "",
   "port": "80",
   "multibot": false
