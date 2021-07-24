@@ -15,6 +15,6 @@ module.exports = envalid.cleanEnv(process.env, {
     moedaCorrente: envalid.str({ default: "BRL" }),
     dataInicial: envalid.str({ default: "01/07/2021" }),
     minPercentualLucro: envalid.num({ default: "0.03" }),
-    intervalo: envalid.str({ default: "null" }),
+    intervalo: envalid.num(),
     VERSION: envalid.str({ default: pjson.version }),
 })
