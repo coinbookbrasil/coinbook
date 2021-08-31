@@ -358,6 +358,11 @@ bot.action('extrato', ctx => {
   checkExtrato();
 });
 
+bot.command('extrato', ctx => {
+  logger.info('Comando Extrato executado')
+  checkExtrato();
+});
+
 //atualiza o saldo de operação
 bot.command('restart', msg => {
   logger.info('Comando Restart executado.')
