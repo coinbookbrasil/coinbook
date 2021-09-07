@@ -39,7 +39,6 @@ build/Release
 
 # Dependency directories
 node_modules/
-log/
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -103,4 +102,10 @@ dist
 
 # TernJS port file
 .tern-port
-botantigo.zip
+
+.idea
+
+config.json
+tmp/
+yarn.lock
+test.js

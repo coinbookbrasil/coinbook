@@ -11,40 +11,40 @@
 	},
     "keywords": ["node", "bitcoin","trading","trader","bot","market","maker","algo","crypto"],
     "env": {
-      "apiKey": {
+      "API_KEY": {
         "description": "Sua API Key da Biscoint",
         "required": true
       },
-      "apiSecret": {
+      "API_SECRET": {
         "description": "Sua API Secret da Biscoint",
         "required": true
       },
 	  "BOT_CHAT": {
-        "description": "Chat id do Telegram",
+        "description": "Chat id do Telegram. Exemplo: 16872718712",
         "required": true,
-		"value": "Exemplo: 178985248"
+		"value": "Exemplo: 16872718712"
       },
       "BOT_TOKEN": {
-        "description": "Token do Telegram",
+        "description": "Token do Telegram. Exemplo: 1688943477:ACDhWI4A0-cy--L3IGgjjp2yuPq2TC7TJvg",
         "required": true,
-		"value": "Exemplo: 1833003976:BBGrQttRROCzFH1UTEjaoYKUXC4wdjpcp"
+		"value": "Exemplo: 1688943477:ACDhWI4A0-cy--L3IGgjjp2yuPq2TC7TJvg"
       },
-      "montante": {
+      "AMOUNT": {
         "description": "Valor que você irá operar",
         "required": true,
 		"value": "300.00"
       },
-      "minPercentualLucro": {
+      "MIN_PROFIT_PERCENT": {
         "description": "Percentual de lucro para acionar o bot",
         "required": true,
 		"value": "0.03"
       },
-      "valorInicial": {
+      "VALOR_INICIAL": {
         "description": "Valor inicial que você depositou",
         "required": true,
 		"value": "300.00"
       },
-      "dataInicial": {
+      "DATA_INICIAL": {
         "description": "Data que o bot iniciou. xx/xx/xxxx",
         "required": true,
 		"value": "15/03/2020"

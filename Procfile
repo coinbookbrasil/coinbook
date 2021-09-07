@@ -1,2 +1,2 @@
-worker: node src/index.js
+worker: npm start
 web: echo "Arbitragem Com Bitcoin"
