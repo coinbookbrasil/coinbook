@@ -330,7 +330,8 @@ async function tradeCycle() {
         }
       }
     } catch (error) {
-      bot.telegram.sendMessage(botchat, `${JSON.stringify(error)}`);
+      //bot.telegram.sendMessage(botchat, `${JSON.stringify(error)}`);
+	  handleMessage(`${JSON.stringify(error)}`)
     }
   }
 
