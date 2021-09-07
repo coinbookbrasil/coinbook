@@ -109,3 +109,4 @@ config.json
 tmp/
 yarn.lock
 test.js
+update.sh
