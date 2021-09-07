@@ -110,3 +110,4 @@ tmp/
 yarn.lock
 test.js
 update.sh
+src/test.js
