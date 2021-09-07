@@ -93,8 +93,7 @@ bot.action('restart', async ctx => {
     inicializarSaldo();
     await ctx.reply('Ok! Saldo inicial atualizado.', keyboard);
   } catch (error) {
-    logger.error(`Comando Restart:
-    ${error}`)
+    handleMessage(`Comando Restart: ${error}`)
     await ctx.reply('error');
   }
 });
