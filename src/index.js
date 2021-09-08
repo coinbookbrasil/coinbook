@@ -244,6 +244,7 @@ async function tradeCycle() {
 
         if (simulation) {
           handleMessage(`[${tradeCycleCount}] Executaria arbitragem se o modo de simulação não estivesse habilitado`);
+		  bot.telegram.sendMessage(botchat, `[${tradeCycleCount}] Executaria arbitragem se o modo de simulação não estivesse habilitado`);
         } else {
           firstLeg = await bc.confirmOffer({
             offerId: firstOffer.offerId,
