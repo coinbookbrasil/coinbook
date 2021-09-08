@@ -2,6 +2,7 @@ import Biscoint from 'biscoint-api-node';
 import _ from 'lodash';
 import { Telegraf, Markup } from 'telegraf';
 import moment from 'moment';
+import Bottleneck from "bottleneck";
 
 // env variables
 let apiKey = process.env.API_KEY
@@ -20,6 +21,14 @@ let valorInicial = process.env.VALOR_INICIAL || 300
 
 // global variables
 let bc, lastTrade = 0, isQuote, balances;
+
+// Limiter Bottleneck
+const limiter = new Bottleneck({
+  reservoir: 30,
+  reservoirRefreshAmount: 30,
+  reservoirRefreshInterval: 60 * 1000,
+  maxConcurrent: 1,
+});
 
 // Initializes the Biscoint API connector object.
 const init = () => {
@@ -344,7 +353,11 @@ async function tradeCycle() {
 
   // handleMessage(`[${cycleCount}] New cycle in ${shouldWaitMs} ms...`);
 
-  setTimeout(tradeCycle, shouldWaitMs);
+  //setTimeout(tradeCycle, shouldWaitMs);
+  
+  setTimeout(() => {
+  limiter.schedule(() => tradeCycle())
+}, shouldWaitMs);
 }
 
 // Starts trading, scheduling trades to happen every 'intervalSeconds' seconds.
