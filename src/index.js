@@ -94,7 +94,7 @@ bot.action('restart', async ctx => {
     await ctx.reply('Ok! Saldo inicial atualizado.', keyboard);
   } catch (error) {
     handleMessage(`Comando Restart: ${error}`)
-    await ctx.reply('error');
+    await ctx.reply(error);
   }
 });
 
