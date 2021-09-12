@@ -9,7 +9,7 @@
   "author": "Biscoint",
   "license": "MIT",
   "dependencies": {
-    "biscoint-api-node": "^1.4.0",
+    "biscoint-api-node": "^1.4.1",
     "bottleneck": "^2.19.5",
     "esm": "^3.2.25",
     "lodash": "^4.17.21",
