@@ -312,7 +312,7 @@ async function tradeCycle() {
             try {
               let { BRL, BTC } = await bc.balance();
               if (BTC >= 0.001) {
-                bot.telegram.sendMessage(botchat, "Não foi possível confirmar a venda de BTC. O BTC será vendido a mercado!");
+                bot.telegram.sendMessage(botchat, "Incapaz de recuperar de arbitragem incompleta. O BTC será vendido a mercado!");
                 let lucroRealizado = await realizarLucro(BTC)
                 if (lucroRealizado) {
                   bot.telegram.sendMessage(botchat, "Ok! Saldo em BTC foi vendido a mercado.");
@@ -332,7 +332,7 @@ async function tradeCycle() {
     try {
       let { BRL, BTC } = await bc.balance();
       if (BTC >= 0.001) {
-        bot.telegram.sendMessage(botchat, "Não foi possível confirmar a venda de BTC. O BTC será vendido a mercado!");
+        bot.telegram.sendMessage(botchat, "Houve um erro ao obter oferta. O BTC será vendido a mercado!");
         let lucroRealizado = await realizarLucro(BTC)
         if (lucroRealizado) {
           bot.telegram.sendMessage(botchat, "Ok! Saldo em BTC foi vendido a mercado.");
