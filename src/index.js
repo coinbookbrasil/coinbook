@@ -477,8 +477,8 @@ function imprimirMensagem(message, throwError = false) {
 // performs initialization, checks and starts the trading cycles.
 async function start() {
   init();
-  await checkBalances();
   await inicializarSaldo();
+  await checkBalances();
   await checkInterval();
   await startTrading();
 }
