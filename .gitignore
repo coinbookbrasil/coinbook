@@ -107,7 +107,10 @@ dist
 
 config.json
 tmp/
+bkp/
 yarn.lock
 test.js
-update.sh
 src/test.js
+src/config.js
+src/env.js
+src/logger.js

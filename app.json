@@ -1,53 +1,61 @@
- {
-    "name": "bitcoin-bot",
-    "description": "Arbitragem com Bitcoin",
-    "logo": "https://biscoint.io/images/biscoint-icon.svg",
-    "repository": "https://github.com/coinbookbrasil/coinbook",
-	"formation": {
+{
+  "name": "bitcoin-bot",
+  "description": "Arbitragem com Bitcoin",
+  "logo": "https://biscoint.io/images/biscoint-icon.svg",
+  "repository": "https://github.com/lagoanova/biscoint-arbitrage-bot",
+  "formation": {
     "worker": {
       "quantity": 1,
       "size": "free"
     }
-	},
-    "keywords": ["node", "bitcoin","trading","trader","bot","market","maker","algo","crypto"],
-    "env": {
-      "API_KEY": {
-        "description": "Sua API Key da Biscoint",
-        "required": true
-      },
-      "API_SECRET": {
-        "description": "Sua API Secret da Biscoint",
-        "required": true
-      },
-	  "BOT_CHAT": {
-        "description": "Chat id do Telegram. Exemplo: 16872718712",
-        "required": true,
-		"value": "Exemplo: 16872718712"
-      },
-      "BOT_TOKEN": {
-        "description": "Token do Telegram. Exemplo: 1688943477:ACDhWI4A0-cy--L3IGgjjp2yuPq2TC7TJvg",
-        "required": true,
-		"value": "Exemplo: 1688943477:ACDhWI4A0-cy--L3IGgjjp2yuPq2TC7TJvg"
-      },
-      "AMOUNT": {
-        "description": "Valor que você irá operar",
-        "required": true,
-		"value": "300.00"
-      },
-      "MIN_PROFIT_PERCENT": {
-        "description": "Percentual de lucro para acionar o bot",
-        "required": true,
-		"value": "0.03"
-      },
-      "VALOR_INICIAL": {
-        "description": "Valor inicial que você depositou",
-        "required": true,
-		"value": "300.00"
-      },
-      "DATA_INICIAL": {
-        "description": "Data que o bot iniciou. xx/xx/xxxx",
-        "required": true,
-		"value": "15/03/2020"
-      }
+  },
+  "keywords": [
+    "node",
+    "bitcoin",
+    "trading",
+    "trader",
+    "bot",
+    "market",
+    "maker",
+    "algo",
+    "crypto"
+  ],
+  "env": {
+    "API_KEY": {
+      "description": "Sua API Key da Biscoint",
+      "required": true
+    },
+    "API_SECRET": {
+      "description": "Sua API Secret da Biscoint",
+      "required": true
+    },
+    "BOT_CHAT": {
+      "description": "Chat id do Telegram. Exemplo: 14872718712",
+      "required": true
+    },
+    "BOT_TOKEN": {
+      "description": "Token do Telegram. Exemplo: 1688943477:ACDhWI4A0-cy--L3IGgjjp2yuPq2TC7TJvg",
+      "required": true
+    },
+    "AMOUNT": {
+      "description": "Informe o valor das operações individuais de compra e venda, na moeda especificada no parâmetro amountCurrency. Por exemplo, se quer que as operações sejam de 100 reais, especifique amount: 300 e amountCurrency: 'BRL'. Valor padrão: 300.",
+      "required": true,
+      "value": "300.00"
+    },
+    "MIN_PROFIT_PERCENT": {
+      "description": "Percentual de lucro para acionar o bot",
+      "required": true,
+      "value": "0.03"
+    },
+    "VALOR_INICIAL": {
+      "description": "Valor inicial que você depositou",
+      "required": true,
+      "value": "300.00"
+    },
+    "DATA_INICIAL": {
+      "description": "Data que o bot iniciou. xx/xx/xxxx",
+      "required": true,
+      "value": "15/03/2020"
     }
   }
+}
