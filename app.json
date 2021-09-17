@@ -38,7 +38,7 @@
       "required": true
     },
     "AMOUNT": {
-      "description": "Informe o valor das operações individuais de compra e venda, na moeda especificada no parâmetro amountCurrency. Por exemplo, se quer que as operações sejam de 300 reais, especifique amount: 300 e amountCurrency: 'BRL'. Valor padrão: 300.",
+      "description": "Valor que você irá operar. Por exemplo, se quer que as operações sejam de 300 reais, especifique amount: 300. Valor padrão: 300",
       "required": true,
       "value": "300.00"
     },
