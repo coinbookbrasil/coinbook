@@ -297,7 +297,7 @@ async function trader() {
             } else if (BTC >= 0.001) {
               try {
                 bot.telegram.sendMessage(botchat, "Tentando realizar o lucro...");
-                let priceBTC = await bc.ticker();
+                //let priceBTC = await bc.ticker();
                 let { BRL, BTC } = await bc.balance();
                 let lucroRealizado = await realizarLucro(BTC)
                 if (lucroRealizado) {
@@ -337,7 +337,7 @@ async function trader() {
               try {
                 bot.telegram.sendMessage(botchat, "Tentando realizar o lucro...");
                 let priceBTC = await bc.ticker();
-                let { BRL, BTC } = await bc.balance();
+                //let { BRL, BTC } = await bc.balance();
                 let lucroRealizado = await realizarLucro(BTC)
                 if (lucroRealizado) {
                   bot.telegram.sendMessage(botchat, "ok! Lucro realizado", keyboard);
@@ -375,7 +375,7 @@ async function trader() {
         } else if (BTC >= 0.001) {
           try {
             bot.telegram.sendMessage(botchat, "Tentando realizar o lucro...");
-            let priceBTC = await bc.ticker();
+            //let priceBTC = await bc.ticker();
             let { BRL, BTC } = await bc.balance();
             let lucroRealizado = await realizarLucro(BTC)
             if (lucroRealizado) {
