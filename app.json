@@ -21,11 +21,11 @@
     "crypto"
   ],
   "env": {
-    "API_KEY": {
+    "APIKEY": {
       "description": "Sua API Key da Biscoint",
       "required": true
     },
-    "API_SECRET": {
+    "APISECRET": {
       "description": "Sua API Secret da Biscoint",
       "required": true
     },

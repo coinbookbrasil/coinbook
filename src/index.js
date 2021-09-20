@@ -6,8 +6,8 @@ import axios from 'axios';
 import Bottleneck from "bottleneck";
 
 // env variables
-let apiKey = process.env.API_KEY
-let apiSecret = process.env.API_SECRET
+let apiKey = process.env.APIKEY
+let apiSecret = process.env.APISECRET
 let amount = process.env.AMOUNT || 300
 let amountCurrency = process.env.AMOUNT_CURRENCY || "BRL"
 let initialBuy = process.env.INITIAL_BUY || true
