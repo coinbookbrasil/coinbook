@@ -231,6 +231,40 @@ const checkInterval = async () => {
 
 let tradeCycleCount = 0;
 
+async function realizarLucro(valor) {
+  return new Promise((resolve, reject) => {
+    (async () => {
+      try {
+        if (valor >= 0.001) {
+          let sellLucro = await bc.offer({
+            amount: valor,
+            isQuote: false,
+            op: 'sell',
+          });
+          try {
+            await bc.confirmOffer({
+              offerId: sellLucro.offerId,
+            });
+            let { BRL, BTC } = await bc.balance();
+            amount = BRL
+            resolve(true)
+          } catch (error) {
+            bot.telegram.sendMessage(botchat, `${error.error}. ${error.details}`);
+            reject(false)
+          }
+        }
+        else {
+          bot.telegram.sendMessage(botchat, "Valor de venda abaixo do limite mínimo de 0.001");
+          reject(false)
+        }
+      } catch (error) {
+        bot.telegram.sendMessage(botchat, `${error.error}. ${error.details} `);
+        reject(false)
+      }
+    })();
+  })
+}
+
 // Executes an arbitrage cycle
 async function trader() {
   if (play) {
@@ -414,40 +448,6 @@ const startTrading = async () => {
 };
 
 // -- UTILITY FUNCTIONS --
-async function realizarLucro(valor) {
-  return new Promise((resolve, reject) => {
-    (async () => {
-      try {
-        if (valor >= 0.001) {
-          let sellLucro = await bc.offer({
-            amount: valor,
-            isQuote: false,
-            op: 'sell',
-          });
-          try {
-            await bc.confirmOffer({
-              offerId: sellLucro.offerId,
-            });
-            let { BRL, BTC } = await bc.balance();
-            amount = BRL
-            resolve(true)
-          } catch (error) {
-            bot.telegram.sendMessage(botchat, `${error.error}. ${error.details}`);
-            reject(false)
-          }
-        }
-        else {
-          bot.telegram.sendMessage(botchat, "Valor de venda abaixo do limite mínimo de 0.001");
-          reject(false)
-        }
-      } catch (error) {
-        bot.telegram.sendMessage(botchat, `${error.error}. ${error.details} `);
-        reject(false)
-      }
-    })();
-  })
-}
-
 function lucroreal(value1, value2) {
   return (Number(value2) / Number(value1)) * 100;
 }
