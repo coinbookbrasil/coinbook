@@ -87,7 +87,7 @@ const keyboard = Markup.inlineKeyboard(
   [
     Markup.button.callback('\u{1F51B} Iniciar Robô', 'startbot'),
     Markup.button.callback('\u{1F6D1} Parar Robô', 'stopbot'),
-   // Markup.button.callback('\u{1F680} Acumular BTC', 'acbtc'),
+    // Markup.button.callback('\u{1F680} Acumular BTC', 'acbtc'),
     Markup.button.callback('\u{1F4BE} Atualizar Saldo', 'restart'),
     Markup.button.callback('\u{1F9FE} Extrato', 'extrato'),
     Markup.button.callback('\u{1F4D6} Ajuda', 'help'),
@@ -318,6 +318,7 @@ async function trader() {
             handleMessage(`Erro ao confirmar a oferta: ${JSON.stringify(error)}`)
             bot.telegram.sendMessage(botchat, `${error.error}. ${error.details}`);
             // Se accumulateBTC for true, faz a venda proporcional
+            let { BRL, BTC } = await bc.balance();
             if (accumulateBTC && BTC >= 0.001) {
               try {
                 bot.telegram.sendMessage(botchat, "Tentando realizar o lucro...");
@@ -336,8 +337,8 @@ async function trader() {
             } else if (BTC >= 0.001) {
               try {
                 bot.telegram.sendMessage(botchat, "Tentando realizar o lucro...");
-                let priceBTC = await bc.ticker();
-                //let { BRL, BTC } = await bc.balance();
+                //let priceBTC = await bc.ticker();
+                let { BRL, BTC } = await bc.balance();
                 let lucroRealizado = await realizarLucro(BTC)
                 if (lucroRealizado) {
                   bot.telegram.sendMessage(botchat, "ok! Lucro realizado", keyboard);
