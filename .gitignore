@@ -114,3 +114,4 @@ src/test.js
 src/config.js
 src/env.js
 src/logger.js
+update.sh
