@@ -235,7 +235,7 @@ async function realizarLucro(valor) {
   return new Promise((resolve, reject) => {
     (async () => {
       try {
-        if (valor >= 0.001) {
+        if (valor >= 0.0001) {
           let sellLucro = await bc.offer({
             amount: valor,
             isQuote: false,
@@ -254,7 +254,7 @@ async function realizarLucro(valor) {
           }
         }
         else {
-          bot.telegram.sendMessage(botchat, "Valor de venda abaixo do limite mínimo de 0.001");
+          bot.telegram.sendMessage(botchat, "Valor de venda abaixo do limite mínimo de 0.0001");
           reject(false)
         }
       } catch (error) {
@@ -313,7 +313,7 @@ async function trader() {
             let { BRL, BTC } = await bc.balance();
             //lucroAcumulado(profit).then(() => { }).catch(e => { handleMessage(e) });
             // Se acbtc for true, faz a venda proporcional
-            if (accumulateBTC && BTC >= 0.001) {
+            if (accumulateBTC && BTC >= 0.0001) {
               try {
                 bot.telegram.sendMessage(botchat, "Tentando realizar o lucro...");
                 let priceBTC = await bc.ticker();
@@ -328,7 +328,7 @@ async function trader() {
                 //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
                 handleMessage(`${JSON.stringify(error)}`)
               }
-            } else if (BTC >= 0.001) {
+            } else if (BTC >= 0.0001) {
               try {
                 bot.telegram.sendMessage(botchat, "Tentando realizar o lucro...");
                 //let priceBTC = await bc.ticker();
@@ -353,7 +353,7 @@ async function trader() {
             bot.telegram.sendMessage(botchat, `${error.error}. ${error.details}`);
             // Se accumulateBTC for true, faz a venda proporcional
             let { BRL, BTC } = await bc.balance();
-            if (accumulateBTC && BTC >= 0.001) {
+            if (accumulateBTC && BTC >= 0.0001) {
               try {
                 bot.telegram.sendMessage(botchat, "Tentando realizar o lucro...");
                 let priceBTC = await bc.ticker();
@@ -368,7 +368,7 @@ async function trader() {
                 //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
                 handleMessage(`${JSON.stringify(error)}`)
               }
-            } else if (BTC >= 0.001) {
+            } else if (BTC >= 0.0001) {
               try {
                 bot.telegram.sendMessage(botchat, "Tentando realizar o lucro...");
                 //let priceBTC = await bc.ticker();
@@ -392,7 +392,7 @@ async function trader() {
         handleMessage(`Erro ao obter oferta: ${JSON.stringify(error)}`)
         let { BRL, BTC } = await bc.balance();
         // Se accumulateBTC for true, faz a venda proporcional
-        if (accumulateBTC && BTC >= 0.001) {
+        if (accumulateBTC && BTC >= 0.0001) {
           try {
             bot.telegram.sendMessage(botchat, "Tentando realizar o lucro...");
             let priceBTC = await bc.ticker();
@@ -407,7 +407,7 @@ async function trader() {
             //imprimirMensagem(`Erro ao tentar realizar lucro: ${JSON.stringify(error)}`);
             handleMessage(`${JSON.stringify(error)}`)
           }
-        } else if (BTC >= 0.001) {
+        } else if (BTC >= 0.0001) {
           try {
             bot.telegram.sendMessage(botchat, "Tentando realizar o lucro...");
             //let priceBTC = await bc.ticker();
